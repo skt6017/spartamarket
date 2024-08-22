@@ -7,8 +7,12 @@
     <button>작성하기</button>
 </a>
 {% for product in products %}
-    <p>[ {{ product.pk }} ] {{ product.title }}<p>
-    <p> 작성자: {{ product.author }}
+    <a href="{% url "products:detail" product.pk %}">
+        <p>[ {{ product.pk }} ] {{ product.title }}<p>
+    </a>
+    <a href="">
+        <p> 작성자: {{ product.author }}
+        </a>
     <hr>
 {% endfor %}
 

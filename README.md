@@ -112,7 +112,9 @@
 - POST /products/<int:pk>/hashtag/<int: hashtag_pk>/delete: 특정 상품에 해시태그 제거
 
 ## ERD
-![Sparatamarket_ERD drawio](https://github.com/user-attachments/assets/1a028081-036b-43e4-91a9-155b133b453b)
+![Uploading Sparatamarket_ERD.drawio (1).png…]()
+
+
 
 
 ## 프로젝트 파일 구조

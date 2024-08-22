@@ -9,4 +9,7 @@
    - 찜하기 : 마음에 드는 물품을 찜하여 나중에 확인할 수 있습니다.
    - 해시태그 : 설정된 해시태그로 물건 목록 혹은 상세페이지에 노출할 수 있습니다.
 
-  3. 적용 기술 : Python, Django, SQLite, VScode, Bootsrap, CSS, HTML, JS
+       3. 적용 기술 : Python, Django, SQLite, VScode, Bootsrap, CSS, HTML, JS
+
+변경사항
+

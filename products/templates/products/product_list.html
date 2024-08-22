@@ -2,10 +2,14 @@
 
 {% block content %}
 <h1>Product List</h1>
+<li><a href="{% url 'products:product_create' %}">상품올리기</a></li>
 <ul>
     {% for product in products %}
         <li>
-            <a href="{% url 'products:product_detail' pk=product.pk %}">{{ product.title }}</a>
+            
+            <a href="{% url 'products:product_detail' pk=product.pk %}">{% if product.image %}
+    <img src="{{ product.image.url }}" alt="{{ product.title }}">
+{% endif %}{{ product.title }}   /  Views: {{ product.view_count }}</a>
         </li>
     {% endfor %}
 </ul>

@@ -10,9 +10,12 @@
 <p>Author: {{ product.author.username }}</p>
 
 
-{% if product.img %}
-    <img src="{{ product.img.url }}" alt="{{ product.title }}">
+
+{% if product.image %}
+    <img src="{{ product.image.url }}" alt="{{ product.title }}">
 {% endif %}
+<br>
 
 <a href="{% url 'products:product_update' pk=product.pk %}">수정하기</a>
+<a href="{% url 'products:product_delete' pk=product.pk %}">삭제하기</a>
 {% endblock %}

@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
 from .forms import ProductForm
 from .models import Product
 
@@ -7,13 +9,15 @@ from .models import Product
 def index(request):
     return render(request, 'products/index.html')
 
+@login_required
 def product_create(request):
     if request.method == "POST":
         # POST 요청 시, 폼 데이터를 포함한 ProductForm을 생성
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():  # 폼이 유효한지 검사
+            form.instance.author = request.user #author로그인 지정
             form.save()  # 유효하면 데이터베이스에 저장
-            # 리다이렉트 
+            return redirect('products:product_detail', pk=form.instance.pk)  # 저장한 product
     else:
         # GET 요청 시, 빈 ProductForm을 생성
         form = ProductForm()
@@ -34,7 +38,7 @@ def product_update(request, pk):
             # 유효성 검사를 통과하면 폼 데이터 저장
             form.save()
             # 상품 상세 페이지로 리다이렉트
-            return redirect('product_detail', pk=product.pk)
+            return redirect('products:product_detail', pk=product.pk)
     else:
         form = ProductForm(instance=product)
     
@@ -52,6 +56,8 @@ def product_delete(request, pk):
 
 def product_detail(request, pk):
     product = get_object_or_404(Product, pk=pk)
+    product.view_count += 1
+    product.save()
     return render(request, 'products/product_detail.html', {'product': product})
 
 def product_list(request):

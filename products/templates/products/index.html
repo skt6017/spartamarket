@@ -2,6 +2,12 @@
 
 {% block content %}
 <h1>Index Page</h1>
+<ul>
+    <li><a href="{% url 'products:product_list' %}">Product List</a></li>
+    <li><a href="{% url 'products:product_create' %}">Create</a></li>
+
+    
+</ul>
 
 {% endblock content %}
 

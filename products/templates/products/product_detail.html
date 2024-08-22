@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+<h1>DETAIL</h1>
+{% block content %}
+<h1>{{ product.title }}</h1>
+<p>{{ product.content }}</p>
+
+<p>Views: {{ product.view_count }}</p>
+<p>Created At: {{ product.created_at }}</p>
+<p>Updated At: {{ product.updated_at }}</p>
+<p>Author: {{ product.author.username }}</p>
+
+
+{% if product.img %}
+    <img src="{{ product.img.url }}" alt="{{ product.title }}">
+{% endif %}
+
+<a href="{% url 'products:product_update' pk=product.pk %}">수정하기</a>
+{% endblock %}

@@ -49,3 +49,11 @@ def product_delete(request, pk):
         return redirect('index')
     
     return render(request, 'products/product_delete.html', {'product': product})
+
+def product_detail(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    return render(request, 'products/product_detail.html', {'product': product})
+
+def product_list(request):
+    products = Product.objects.all()
+    return render(request, 'products/product_list.html', {'products': products})

@@ -1,7 +1,18 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from .forms import ProductForm
-
+from .models import Product
 # Create your views here.
+
+def products(request):
+    products = Product.objects.all().order_by("-pk")
+    context = {"products": products}
+    return render(request, "products/products.html", context)
+
+def detail(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    context = {'product':product}
+    return render(request, "products/detail.html", context)
+
 def product_create(request):
     if request.method == "POST":
         # POST 요청 시, 폼 데이터를 포함한 ProductForm을 생성

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Product detail</h1>
+<h3>{{ product.title }}</h3>
+<p> 작성자: {{ product.author }}<p>
+<p> {{}}
+<p> 내용: {{ product.content }}<p>
+<p> created_at: {{ product.created_at }}<p>
+<p> updated_at: {{product.updated_at }}</p>
+
+{% endblock content %}

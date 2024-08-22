@@ -1,4 +1,5 @@
 from django.db import models
+from spartamarket import settings
 
 class Product(models.Model):
     title = models.CharField(max_length=50)
@@ -7,5 +8,9 @@ class Product(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     image = models.ImageField(upload_to="images/", blank=True)
 
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="products"
+    )
+    
     def __str__(self):
         return self.title  

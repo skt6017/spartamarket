@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Products</h1>
+<a href="{% url "products:product_create" %}">
+    <button>작성하기</button>
+</a>
+{% for product in products %}
+    <p>[ {{ product.pk }} ] {{ product.title }}<p>
+    <p> 작성자: {{ product.author }}
+    <hr>
+{% endfor %}
+
+{% endblock content %}
+
+

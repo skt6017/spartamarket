@@ -40,3 +40,12 @@ def product_update(request, pk):
     
     # 폼과 product 데이터를 컨텍스트에 담아 템플릿에 전달
     return render(request, 'products/product_update.html', {'form': form, 'product': product})
+
+def product_delete(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    
+    if request.method == 'POST':
+        product.delete()
+        return redirect('index')
+    
+    return render(request, 'products/product_delete.html', {'product': product})

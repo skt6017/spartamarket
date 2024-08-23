@@ -1,16 +1,11 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block content %}
 <h1>Index Page</h1>
+<img src="{% static "products/cat.png" %}">
 <ul>
     <li><a href="{% url 'products:products' %}">Product List</a></li>
-    <li><a href="{% url 'products:product_create' %}">Create</a></li>
-
-    
-</ul>
-
-<ul>
-    <li><a href="{% url "products:products" %}">prodcuts로 가기</a></li>
+    <li><a href="{% url 'products:create' %}">Create</a></li>
 </ul>
 {% endblock content %}
 

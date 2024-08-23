@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,6 +10,10 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/35050ac00b.js" crossorigin="anonymous"></script>
     <title>spartamarket</title>
+
+    <link rel="stylesheet" href="{% static "css/style.css" %}">
+    {% block head %}{% endblock head %}
+    
 </head>
 
 <body>

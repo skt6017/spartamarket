@@ -3,7 +3,7 @@
 {% block content %}
 
 <h1>Products</h1>
-<a href="{% url 'products:product_create' %}">
+<a href="{% url 'products:create' %}">
     <button>작성하기</button>
 </a>
 <form action="{% url 'products:search' %}" method="POST" class="d-flex" role="search">
@@ -20,6 +20,12 @@
     <a href="">
         <p> 작성자: {{ product.author }}
         </a>
+    <p> 조회수: {{ product.view_count }}
+    <ul>
+        {% for hashtag in product.hashtags.all %}
+        <li><a href="{% url 'products:hashtag' hashtag_pk=hashtag.pk %}">#{{ hashtag.content }}</a></li>
+        {% endfor %}
+    </ul>
     <form action="{% url 'products:like' product.pk %}" method="POST">
         {% csrf_token %}
         {% if request.user in product.like_users.all %}
@@ -32,6 +38,7 @@
         </button>
         {% endif %}
     </form>
+    
     <hr>
 {% endfor %}
 

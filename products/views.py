@@ -1,3 +1,4 @@
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods, require_POST
@@ -21,13 +22,15 @@ def create(request):
             product = form.save(commit=False)
             product.author = request.user
             product.save()
-            form.save_m2m()
-            new_hashtags = request.POST.get('new_hashtags', '').split(',')
-            for tag in new_hashtags:
-                if tag.strip():
-                    hashtag, created = Hashtag.objects.get_or_create(content=tag.strip())
-                    product.hashtags.add(hashtag)
-            return redirect('products:detail', pk=product.pk) 
+            form.save_m2m() # m2m을 먼저 저장, 제품과 해시태그의 관계를 처리 준비
+            new_hashtags = request.POST.get('new_hashtags', '') #사용자 입력한 new_hashtags필드가져옴, 기본은 ''
+            hashtags = [tag.strip('#') for tag in new_hashtags.split() if tag.startswith('#')]
+            #문자열을 공백으로 분리, strip('#')를 통해 '#'를 제거, hashtags list로 변환
+            for tag in hashtags: #for each hashtag in hashtags
+                if tag: # if tag is not empty
+                    hashtag, created = Hashtag.objects.get_or_create(content=tag) # hashtag object or create it
+                    product.hashtags.add(hashtag)  # add hashtag to product's hashtags
+            return redirect('products:detail', pk=product.pk) # redirect to product detail page
     else:
         form = ProductForm()
     context = {"form": form}
@@ -52,9 +55,9 @@ def delete(request, pk):
     
     if request.method == 'POST':
         product.delete()
-        return redirect('index')
+        return redirect('products:products')
     
-    return render(request, 'products/products.html', {'product': product})
+    return redirect('index')
 
 
 @require_POST

@@ -26,7 +26,7 @@ class Product(models.Model):
     like_users = models.ManyToManyField(
         settings.AUTH_USER_MODEL, related_name="like_products"
     )
-    hashtags = models.ManyToManyField(Hashtag, blank=True)
+    hashtags = models.ManyToManyField(Hashtag, blank=True) # hashtags to product 추가
     
     def __str__(self):
         return self.title  

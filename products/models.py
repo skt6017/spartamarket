@@ -10,7 +10,6 @@ class Product(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     view_count = models.IntegerField(default=0)
 
-
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="products"
     )

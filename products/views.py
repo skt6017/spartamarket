@@ -3,17 +3,23 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods, require_POST
 from .forms import ProductForm
 from .models import Product
+# Create your views here.
+def index(request):
+    return render(request, 'products/index.html')
 
 def products(request):
     products = Product.objects.all().order_by("-pk")
     context = {"products": products}
     return render(request, "products/products.html", context)
 
+@login_required
 def detail(request, pk):
     product = get_object_or_404(Product, pk=pk)
     context = {'product':product}
     return render(request, "products/detail.html", context)
 
+@login_required
+@require_http_methods(["GET","POST"])
 def product_create(request):
     if request.method == "POST":
         # POST 요청 시, 폼 데이터를 포함한 ProductForm을 생성
@@ -25,9 +31,10 @@ def product_create(request):
     else:
         form = ProductForm()
     context = {"form": form}
+    return render(request, "products/prodfucts_create.html", context)
 
-    return render(request, "products/product_create.html", context)
-
+@login_required
+@require_http_methods(["GET","POST"])
 def product_update(request, pk):
     # pk를 기반, Product 객체를 가져오고, 없으면 404
     product = get_object_or_404(Product, pk=pk)
@@ -47,6 +54,8 @@ def product_update(request, pk):
     # 폼과 product 데이터를 컨텍스트에 담아 템플릿에 전달
     return render(request, 'products/product_update.html', {'form': form, 'product': product})
 
+@login_required
+@require_POST
 def product_delete(request, pk):
     product = get_object_or_404(Product, pk=pk)
     
@@ -56,7 +65,7 @@ def product_delete(request, pk):
     
     return render(request, 'products/products.html', {'product': product})
 
-
+@login_required
 @require_POST
 def like(request, product_pk):
     if request.user.is_authenticated():

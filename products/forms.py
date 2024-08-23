@@ -8,4 +8,4 @@ class ProductForm(forms.ModelForm):
     class Meta:
         model = Product  
         fields = "__all__"
-        exclude = ["author","view_count"]
+        exclude = ["author","like_users","view_count"]

@@ -24,7 +24,7 @@ def detail(request, pk):
 
 @login_required
 @require_http_methods(["GET","POST"])
-def product_create(request):
+def create(request):
     if request.method == "POST":
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():  # 폼이 유효한지 검사
@@ -37,11 +37,9 @@ def product_create(request):
         form = ProductForm()
     # 폼을 컨텍스트에 담아 템플릿으로 렌더링
     context = {"form": form}
-    return render(request, "products/prodfucts_create.html", context)
-
-@login_required
+    return render(request, "products/create.html", context)
 @require_http_methods(["GET","POST"])
-def product_update(request, pk):
+def update(request, pk):
     # pk를 기반, Product 객체를 가져오고, 없으면 404
     product = get_object_or_404(Product, pk=pk)
     
@@ -58,24 +56,24 @@ def product_update(request, pk):
         form = ProductForm(instance=product)
     
     # 폼과 product 데이터를 컨텍스트에 담아 템플릿에 전달
-    return render(request, 'products/product_update.html', {'form': form, 'product': product})
+    return render(request, 'products/update.html', {'form': form, 'product': product})
 
 @login_required
 @require_POST
-def product_delete(request, pk):
+def delete(request, pk):
     product = get_object_or_404(Product, pk=pk)
-    
-    if request.method == 'POST':
+    if request.user == product.author:
         product.delete()
-        return redirect('index')
+        return redirect('products:prodcuts')
+    else:
+        return redirect('prodcuts:detial', pk)
     
-    return render(request, 'products/products.html', {'product': product})
 
 @login_required
 @require_POST
-def like(request, product_pk):
+def like(request, pk):
     if request.user.is_authenticated():
-        product = get_object_or_404(Product, pk = product_pk)
+        product = get_object_or_404(Product, pk = pk)
         # request.user가 상품을 이미 좋아요 한 상태이면 좋아요한 유저에서 delete
         if product.like_users.filter(pk=request.user.pk).exists():
             product.like_users.delete(request.user)

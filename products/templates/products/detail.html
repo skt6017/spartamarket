@@ -1,14 +1,20 @@
-{% extends "base.html" %}
-
+{% extends 'base.html' %}
+<h1>DETAIL</h1>
 {% block content %}
-<h1>Product detail</h1>
-<h3>{{ product.title }}</h3>
-<p> 작성자: {{ product.author }}<p>
-<p> 이미지</p>
-<p> 내용: {{ product.content }}<p>
-<p> 조회수:  / 찜하기: </p>
-<p> created_at: {{ product.created_at }}<p>
-<p> updated_at: {{product.updated_at }}</p>
+<h1>{{ product.title }}</h1>
+<p>{{ product.content }}</p>
 
-<a href="{% url "products:products" %}">돌아가기</a>
-{% endblock content %}
+<p>Views: {{ product.view_count }}</p>
+<p>Created At: {{ product.created_at }}</p>
+<p>Updated At: {{ product.updated_at }}</p>
+<p>Author: 
+    <a href="">{{ product.author.username }}</a> </p>
+
+{% if product.image %}
+    <img src="{{ product.image.url }}" alt="{{ product.title }}">
+{% endif %}
+<br>
+
+<a href="{% url 'products:update' pk=product.pk %}">수정하기</a>
+<a href="{% url 'products:delete' pk=product.pk %}">삭제하기</a>
+{% endblock %}

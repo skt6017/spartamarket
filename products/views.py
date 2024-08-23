@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import ProductForm
 from .models import Product
+from django.db.models import Q
 # Create your views here.
 def index(request):
     return render(request, 'products/index.html')
@@ -86,4 +87,22 @@ def like(request, product_pk):
     # 로그인 되어있지 않으면 로그인 페이지로 리다이렉트
     return redirect('accounts:login')
 
-    
+def search(request):
+    products = Product.objects.all().order_by('-id')
+    # form 필드 'searched'가 POST 요청에 없다면 (검생창으로 받은 입력이 없음) 빈 문자열을 반환
+    searched = request.POST.get('searched', '')
+
+    # 검색값이 있다면(빈 문자열이 아니라면)
+    if searched:
+        # products에서 filter해 title이나 content에 검색값과 일치하는 값이 있는지 찾음
+        products = products.filter(
+            Q(title__icontains=searched) | Q(content__icontains=searched)
+        )
+        context = {
+            'products': products,
+            'searched': searched,
+        }
+        return render(request, 'products/search.html', context)
+    else:
+        return render(request, 'products/search.html')
+

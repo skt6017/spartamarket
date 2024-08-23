@@ -108,8 +108,6 @@
 - POST /products/<int:pk>/update: 등록한 상품 수정.
 - POST /products/<int:pk>/delete: 등록한 상품 삭제.
 - POST /products/<int:pk>/like: 특정 상품을 찜 목록에 추가 및 제거
-- POST /products/<int:pk>/hashtag: 특정 상품에 해시태그 추가
-- POST /products/<int:pk>/hashtag/<int: hashtag_pk>/delete: 특정 상품에 해시태그 제거
 
 ## ERD
 ![Uploading Sparatamarket_ERD.drawio (1).png…]()

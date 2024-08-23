@@ -2,6 +2,8 @@ from django.shortcuts import get_object_or_404, render, redirect
 from .forms import ProductForm
 from .models import Product
 # Create your views here.
+def index(request):
+    return render(request, 'products/index.html')
 
 def products(request):
     products = Product.objects.all().order_by("-pk")
@@ -27,6 +29,3 @@ def product_create(request):
     # 폼을 컨텍스트에 담아 템플릿으로 렌더링
     context = {"form": form}
     return render(request, "products/products_create.html", context)
-
-def index(request):
-    return render(request, 'products/index.html')

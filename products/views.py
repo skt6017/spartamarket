@@ -38,6 +38,7 @@ def create(request):
     # 폼을 컨텍스트에 담아 템플릿으로 렌더링
     context = {"form": form}
     return render(request, "products/create.html", context)
+
 @require_http_methods(["GET","POST"])
 def update(request, pk):
     # pk를 기반, Product 객체를 가져오고, 없으면 404

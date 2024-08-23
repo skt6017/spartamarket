@@ -17,7 +17,7 @@
         {% csrf_token %}
         <a href="{% url 'products:detail' product.pk %}">[ {{ product.pk }} ] {{ product.title }}</a>
     </form>
-    <a href="">
+    <a href="{% url "users:profile" product.author %}">
         <p> 작성자: {{ product.author }}
         </a>
     <p> 조회수: {{ product.view_count }}

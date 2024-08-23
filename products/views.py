@@ -32,6 +32,7 @@ def create(request):
         if form.is_valid():
             product = form.save(commit=False)
             product.author = request.user
+            product.view_count = 0
             product.save()
             form.save_m2m() # m2m을 먼저 저장, 제품과 해시태그의 관계를 처리 준비
             new_hashtags = request.POST.get('new_hashtags', '') #사용자 입력한 new_hashtags필드가져옴, 기본은 ''

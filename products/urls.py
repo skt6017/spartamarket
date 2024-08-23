@@ -10,5 +10,6 @@ urlpatterns = [
     path('<int:pk>/update/', views.update, name='update'),
     path('<int:pk>/delete/', views.delete, name='delete'),
     path('<int:pk>/like/', views.like, name='like'),
+    path('<int:hashtag_pk>/hashtag/', views.hashtag, name='hashtag'), # hashtag detail page
 
     ]

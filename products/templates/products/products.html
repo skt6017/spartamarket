@@ -16,6 +16,11 @@
         <p> 작성자: {{ product.author }}
         </a>
     <p> 조회수: {{ product.view_count }}
+    <ul>
+        {% for hashtag in product.hashtags.all %}
+        <li><a href="{% url 'products:hashtag' hashtag_pk=hashtag.pk %}">#{{ hashtag.content }}</a></li>
+        {% endfor %}
+    </ul>
     <form action="{% url 'products:like' product.pk %}" method="POST">
         {% csrf_token %}
         {% if request.user in product.like_users.all %}

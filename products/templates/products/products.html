@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Products</h1>
+<a href="{% url 'products:product_create' %}">
+    <button>작성하기</button>
+</a>
+{% for product in products %}
+    <a href="{% url 'products:detail' product.pk %}">
+        <p>[ {{ product.pk }} ] {{ product.title }}<p>
+    </a>
+    <a href="">
+        <p> 작성자: {{ product.author }}
+        </a>
+    <form action="{% url 'products:like' product.pk %}" method="POST">
+        {% csrf_token %}
+        {% if request.user in product.like_users.all %}
+        <button class="btn btn-link text-danger">
+            <i class="fa-solid fa-heart"></i>
+        </button>
+        {% else %}
+        <button class="btn btn-link text-danger">
+            <i class="fa-regular fa-heart"></i>
+        </button>
+        {% endif %}
+    </form>
+    <hr>
+{% endfor %}
+
+{% endblock content %}
+
+

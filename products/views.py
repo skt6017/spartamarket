@@ -1,15 +1,19 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_http_methods, require_POST
 from .forms import ProductForm
 from .models import Product
 
-# Create your views here.
+def products(request):
+    products = Product.objects.all().order_by("-pk")
+    context = {"products": products}
+    return render(request, "products/products.html", context)
 
-def index(request):
-    return render(request, 'products/index.html')
+def detail(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    context = {'product':product}
+    return render(request, "products/detail.html", context)
 
-@login_required
 def product_create(request):
     if request.method == "POST":
         # POST 요청 시, 폼 데이터를 포함한 ProductForm을 생성
@@ -17,13 +21,11 @@ def product_create(request):
         if form.is_valid():  # 폼이 유효한지 검사
             form.instance.author = request.user #author로그인 지정
             form.save()  # 유효하면 데이터베이스에 저장
-            return redirect('products:product_detail', pk=form.instance.pk)  # 저장한 product
+            return redirect('products:detail', pk=form.instance.pk)  # 저장한 product
     else:
-        # GET 요청 시, 빈 ProductForm을 생성
         form = ProductForm()
-
-    # 폼을 컨텍스트에 담아 템플릿으로 렌더링
     context = {"form": form}
+
     return render(request, "products/product_create.html", context)
 
 def product_update(request, pk):
@@ -38,7 +40,7 @@ def product_update(request, pk):
             # 유효성 검사를 통과하면 폼 데이터 저장
             form.save()
             # 상품 상세 페이지로 리다이렉트
-            return redirect('products:product_detail', pk=product.pk)
+            return redirect('products:detail', pk=product.pk)
     else:
         form = ProductForm(instance=product)
     
@@ -52,14 +54,21 @@ def product_delete(request, pk):
         product.delete()
         return redirect('index')
     
-    return render(request, 'products/product_delete.html', {'product': product})
+    return render(request, 'products/products.html', {'product': product})
 
-def product_detail(request, pk):
-    product = get_object_or_404(Product, pk=pk)
-    product.view_count += 1
-    product.save()
-    return render(request, 'products/product_detail.html', {'product': product})
 
-def product_list(request):
-    products = Product.objects.all()
-    return render(request, 'products/product_list.html', {'products': products})
+@require_POST
+def like(request, product_pk):
+    if request.user.is_authenticated():
+        product = get_object_or_404(Product, pk = product_pk)
+        # request.user가 상품을 이미 좋아요 한 상태이면 좋아요한 유저에서 delete
+        if product.like_users.filter(pk=request.user.pk).exists():
+            product.like_users.delete(request.user)
+        else:
+            product.like_users.add(request.user)
+        # products 페이지로 리다이렉트
+        return redirect('products:products')
+    # 로그인 되어있지 않으면 로그인 페이지로 리다이렉트
+    return redirect('accounts:login')
+
+    

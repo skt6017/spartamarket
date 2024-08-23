@@ -22,10 +22,11 @@
     {% endfor %}
 </ul>
 <BR>
-    
+{% if request.user == product.author or request.user.is_staff %}
 <a href="{% url 'products:update' pk=product.pk %}">수정하기</a>
 <form action="{% url 'products:delete' pk=product.pk %}" method="post">
     {% csrf_token %}
     <button type="submit">삭제하기</button>
 </form>
+{% endif %}
 {% endblock %}

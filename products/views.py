@@ -1,10 +1,10 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.decorators.http import require_http_methods, require_GET, require_POST
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect, get_object_or_404
 from .forms import ProductForm
 from .models import Product
 from django.db.models import Q
+
 # Create your views here.
 def index(request):
     return render(request, 'products/index.html')

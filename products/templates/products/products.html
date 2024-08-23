@@ -6,10 +6,12 @@
 <a href="{% url 'products:product_create' %}">
     <button>작성하기</button>
 </a>
+<hr>
 {% for product in products %}
-    <a href="{% url 'products:detail' product.pk %}">
-        <p>[ {{ product.pk }} ] {{ product.title }}<p>
-    </a>
+    <form action="{% url "products:detail" product.pk %}" method="POST">
+        {% csrf_token %}
+        <a href="{% url "products:detail" product.pk %}">[ {{ product.pk }} ] {{ product.title }}</a>
+    </form>
     <a href="">
         <p> 작성자: {{ product.author }}
         </a>

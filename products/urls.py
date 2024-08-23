@@ -1,5 +1,7 @@
 from django.urls import path, include
-from. import views
+from . import views
+from django.urls import path
+
 app_name="products"
 urlpatterns = [
     path('', views.products, name="products"),

@@ -3,7 +3,7 @@
 {% block content %}
 
 <h1>Products</h1>
-<a href="{% url 'products:product_create' %}">
+<a href="{% url 'products:create' %}">
     <button>작성하기</button>
 </a>
 {% for product in products %}
@@ -13,6 +13,11 @@
     <a href="">
         <p> 작성자: {{ product.author }}
         </a>
+    <ul>
+        {% for hashtag in product.hashtags.all %}
+        <li><a href="{% url 'products:hashtag' hashtag_pk=hashtag.pk %}">#{{ hashtag.content }}</a></li>
+        {% endfor %}
+    </ul>
     <form action="{% url 'products:like' product.pk %}" method="POST">
         {% csrf_token %}
         {% if request.user in product.like_users.all %}

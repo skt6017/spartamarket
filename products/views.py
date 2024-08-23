@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods, require_POST
 from .forms import ProductForm
-from .models import Product
+from .models import Hashtag, Product
 
 def products(request):
     products = Product.objects.all().order_by("-pk")
@@ -14,40 +14,40 @@ def detail(request, pk):
     context = {'product':product}
     return render(request, "products/detail.html", context)
 
-def product_create(request):
+def create(request):
     if request.method == "POST":
-        # POST 요청 시, 폼 데이터를 포함한 ProductForm을 생성
         form = ProductForm(request.POST, request.FILES)
-        if form.is_valid():  # 폼이 유효한지 검사
-            form.instance.author = request.user #author로그인 지정
-            form.save()  # 유효하면 데이터베이스에 저장
-            return redirect('products:detail', pk=form.instance.pk)  # 저장한 product
+        if form.is_valid():
+            product = form.save(commit=False)
+            product.author = request.user
+            product.save()
+            form.save_m2m()
+            new_hashtags = request.POST.get('new_hashtags', '').split(',')
+            for tag in new_hashtags:
+                if tag.strip():
+                    hashtag, created = Hashtag.objects.get_or_create(content=tag.strip())
+                    product.hashtags.add(hashtag)
+            return redirect('products:detail', pk=product.pk) 
     else:
         form = ProductForm()
     context = {"form": form}
 
-    return render(request, "products/product_create.html", context)
+    return render(request, "products/create.html", context)
 
-def product_update(request, pk):
-    # pk를 기반, Product 객체를 가져오고, 없으면 404
+def update(request, pk):
     product = get_object_or_404(Product, pk=pk)
     
-    # 요청이 POST인 경우, 
     if request.method == 'POST':
-        # POST 데이터를 기반으로 기존 product 인스턴스를 업데이트하기 위해 폼을 초기화
         form = ProductForm(request.POST, instance=product)
         if form.is_valid():
-            # 유효성 검사를 통과하면 폼 데이터 저장
             form.save()
-            # 상품 상세 페이지로 리다이렉트
             return redirect('products:detail', pk=product.pk)
     else:
         form = ProductForm(instance=product)
     
-    # 폼과 product 데이터를 컨텍스트에 담아 템플릿에 전달
-    return render(request, 'products/product_update.html', {'form': form, 'product': product})
+    return render(request, 'products/update.html', {'form': form, 'product': product})
 
-def product_delete(request, pk):
+def delete(request, pk):
     product = get_object_or_404(Product, pk=pk)
     
     if request.method == 'POST':
@@ -71,4 +71,16 @@ def like(request, product_pk):
     # 로그인 되어있지 않으면 로그인 페이지로 리다이렉트
     return redirect('accounts:login')
 
+@login_required
+def hashtag(request, hashtag_pk):
+    hashtag = get_object_or_404(Hashtag, pk=hashtag_pk)
+    products = Product.objects.filter(hashtags=hashtag)
+    context = {
+        'hashtag': hashtag, 
+        'products': products,
+    }
+    return render(request, 'products/hashtag.html', context)
+
     
+def index(request):
+    return render(request, 'products/index.html')

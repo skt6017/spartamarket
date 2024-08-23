@@ -45,35 +45,49 @@ def create(request):
             return redirect('products:detail', pk=product.pk) # redirect to product detail page
     else:
         form = ProductForm()
-    # 폼을 컨텍스트에 담아 템플릿으로 렌더링
     context = {"form": form}
     return render(request, "products/create.html", context)
 
 @require_http_methods(["GET","POST"])
 def update(request, pk):
-    # pk를 기반, Product 객체를 가져오고, 없으면 404
     product = get_object_or_404(Product, pk=pk)
     
     if request.method == 'POST':
         form = ProductForm(request.POST, instance=product)
         if form.is_valid():
             form.save()
-            return redirect('products:detail', pk=product.pk)
+            # 해시태그 업데이트 처리
+            new_hashtags = request.POST.get('new_hashtags', '')
+            if new_hashtags:
+                # 해시태그를 '#'으로 시작하는 부분만 추출하여 리스트로 저장
+                hashtags = [tag.strip('#') for tag in new_hashtags.split() if tag.startswith('#')]
+                product.hashtags.clear()  # 기존 해시태그를 모두 지움
+                for tag in hashtags:
+                    hashtag, created = Hashtag.objects.get_or_create(content=tag)
+                    product.hashtags.add(hashtag)
+
+            product.save()
+            return redirect('products:detail', pk=pk)
     else:
         form = ProductForm(instance=product)
     
-    # 폼과 product 데이터를 컨텍스트에 담아 템플릿에 전달
-    return render(request, 'products/update.html', {'form': form, 'product': product})
+    context = {
+        'form': form,
+        'product': product,
+        'existing_hashtags': ' '.join([f'#{hashtag.content}' for hashtag in product.hashtags.all()])
+    }
+
+    return render(request, 'products/update.html', context)
 
 @login_required
 @require_POST
 def delete(request, pk):
     product = get_object_or_404(Product, pk=pk)
-    if request.user == product.author:
+    if request.user == product.author or request.user.is_staff:
         product.delete()
-        return redirect('products:prodcuts')
+        return redirect('products:products')
     else:
-        return redirect('prodcuts:detial', pk)
+        return redirect('products:detail', pk=pk)
     
 
 @login_required
@@ -102,7 +116,6 @@ def hashtag(request, hashtag_pk):
     }
     return render(request, 'products/hashtag.html', context)
 
-   
 def search(request):
     products = Product.objects.all().order_by('-id')
     # form 필드 'searched'가 POST 요청에 없다면 (검생창으로 받은 입력이 없음) 빈 문자열을 반환

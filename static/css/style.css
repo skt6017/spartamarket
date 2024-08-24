@@ -1,0 +1,23 @@
+img{
+
+    width: 250px;
+}
+
+.greeting{
+    /* username 상단 위치 */
+    color: #ff0000;
+    justify-content: space-between;
+}
+
+
+.profile-link{
+    /* 프로필보기링크 */
+
+    color: red;
+}
+
+
+.profile-heading{
+    /* 프로필페이지  */
+    color:red;
+}

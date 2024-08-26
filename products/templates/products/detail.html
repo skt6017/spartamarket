@@ -1,20 +1,30 @@
+
 {% extends 'base.html' %}
+{% load static %}
 <h1>DETAIL</h1>
 
 {% block content %}
 <h1>{{ product.title }}</h1>
+<p style="display: flex; align-items: center;">
+작성자: 
+    <a href="{% url "users:profile" product.author %}" >{{ product.author.username }}</a>
+
+{% if product.author.image %}
+    <img src="{{ product.author.image.url }}" alt="{{ product.author.image }}"style="width: 50px; height: 50px; border-radius: 50%; vertical-align: middle;">
+    {% else %}
+    <img src="{% static "accounts/user.png" %}" style="width: 24px; height: 24px; border-radius: 50%; vertical-align: middle;">
+    {% endif %}
+</p>
+<br>
 {% if product.image %}
     <img src="{{ product.image.url }}" alt="{{ product.image }}">
 {% endif %}
 <p>{{ product.content }}</p>
 
-<p>조회수: {{ product.view_count }}</p>
-<p>작성 날짜: {{ product.created_at }}</p>
-<p>수정 날짜: {{ product.updated_at }}</p>
-<p>작성자: 
-    <a href="{% url "users:profile" product.author %}">{{ product.author.username }}</a> </p>
-    
-<br>
+<p>조회수: {{ product.view_count }}<br>
+작성 날짜: {{ product.created_at }}<br>
+수정 날짜: {{ product.updated_at }}</p>
+
 <h4>Hashtags:</h4>
 <ul>
     {% for hashtag in product.hashtags.all %}

@@ -1,24 +1,20 @@
 {% extends 'base.html' %}
 <h1>DETAIL</h1>
-
 {% block content %}
-<h1>{{ product.title }}</h1>
+<h1 class="fw-bold">{{ product.title }}</h1>
 {% if product.image %}
     <img src="{{ product.image.url }}" alt="{{ product.image }}">
 {% endif %}
 <p>{{ product.content }}</p>
-
 <p>조회수: {{ product.view_count }}</p>
 <p>작성 날짜: {{ product.created_at }}</p>
 <p>수정 날짜: {{ product.updated_at }}</p>
-<p>작성자: 
-    <a href="{% url "users:profile" product.author %}">{{ product.author.username }}</a> </p>
-    
+<p>작성자:<a href="{% url "users:profile" product.author %}">{{ product.author.username }}</a> </p>
 <br>
 <h4>Hashtags:</h4>
-<ul>
+<ul class="list-group list-group-horizontal">
     {% for hashtag in product.hashtags.all %}
-    <li><a href="{% url 'products:hashtag' hashtag_pk=hashtag.pk %}">#{{ hashtag.content }}</a></li>
+    <li class="list-group-item"><a href="{% url 'products:hashtag' hashtag_pk=hashtag.pk %}">#{{ hashtag.content }}</a></li>
     {% endfor %}
 </ul>
 <BR>

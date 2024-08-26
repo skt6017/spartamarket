@@ -1,10 +1,13 @@
 {% extends "base.html" %}
 {% load static %}
+
 {% block content %}
-<div class="container">
-    <h1 class="fw-bold">Index Page</h1>
+<center>
+<div class="index-page">
+    <img src="{% static 'products/lovenpeace_big.png' %}">
 </div>
-<img src="{% static 'products/cat.png' %}">
+</center>
+</body>
 <div class="row">
     <ul class="list-group list-group-flush">
         <li class="list-group-item"><a href="{% url 'products:products' %}">상품리스트</a></li>

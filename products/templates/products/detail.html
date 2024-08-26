@@ -5,14 +5,13 @@
 {% block content %}
 <h1>{{ product.title }}</h1>
 <p style="display: flex; align-items: center;">
-작성자: 
-    <a href="{% url "users:profile" product.author %}" >{{ product.author.username }}</a>
-
 {% if product.author.image %}
     <img src="{{ product.author.image.url }}" alt="{{ product.author.image }}"style="width: 50px; height: 50px; border-radius: 50%; vertical-align: middle;">
     {% else %}
     <img src="{% static "accounts/user.png" %}" style="width: 24px; height: 24px; border-radius: 50%; vertical-align: middle;">
     {% endif %}
+    <a href="{% url "users:profile" product.author %}" >{{ product.author.username }}</a>
+
 </p>
 <br>
 {% if product.image %}

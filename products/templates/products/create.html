@@ -1,7 +1,6 @@
 {% extends "base.html" %}
-
 {% block content %}
-<h1>새로운 상품 작성하기</h1>
+<h1 class="fw-bold">새로운 상품 작성하기</h1>
 <form action="{% url "products:create" %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}

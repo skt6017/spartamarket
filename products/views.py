@@ -1,13 +1,12 @@
-
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.decorators.http import require_http_methods, require_GET, require_POST
 from django.contrib.auth.decorators import login_required
 from .forms import ProductForm
 from .models import Hashtag, Product
 from django.db.models import Q
+import re
 
 # Create your views here.
-
 
 def index(request):
     return render(request, 'products/index.html')
@@ -43,12 +42,26 @@ def create(request):
             product.view_count = 0
             product.save()
             form.save_m2m()  # m2m을 먼저 저장, 제품과 해시태그의 관계를 처리 준비
-            # 사용자 입력한 new_hashtags필드가져옴, 기본은 ''
+            
+            # 사용자 입력한 new_hashtags 필드 가져옴, 기본은 ''
             new_hashtags = request.POST.get('new_hashtags', '')
-            hashtags = [tag.strip('#')
-                        for tag in new_hashtags.split() if tag.startswith('#')]
-            # 문자열을 공백으로 분리, strip('#')를 통해 '#'를 제거, hashtags list로 변환
-            for tag in hashtags:  # for each hashtag in hashtags
+            hashtags = [tag.strip('#') for tag in new_hashtags.split() if tag.startswith('#')]
+
+            ### 해시태그 검증 로직 추가 ###
+            valid_hashtags = []
+            for tag in hashtags:
+                if re.search(r'\s', tag):  # 공백이 포함되어 있는지 확인
+                    form.add_error(None, f"해시태그 '{tag}'는 공백을 포함할 수 없습니다.")
+                elif re.search(r'[^a-zA-Z0-9가-힣]', tag):  # 특수문자가 포함되어 있는지 확인
+                    form.add_error(None, f"해시태그 '{tag}'는 특수문자를 포함할 수 없습니다.")
+                else:
+                    valid_hashtags.append(tag)
+            
+            if form.errors:  # 유효하지 않은 해시태그가 있을 경우, 폼을 다시 렌더링
+                return render(request, "products/create.html", {"form": form})
+
+            # 검증된 해시태그만 제품에 추가
+            for tag in valid_hashtags:
                 if tag:  # if tag is not empty
                     hashtag, created = Hashtag.objects.get_or_create(
                         content=tag)  # hashtag object or create it
@@ -70,13 +83,33 @@ def update(request, pk):
         form = ProductForm(request.POST, request.FILES, instance=product)
         if form.is_valid():
             form.save()
+
             # 해시태그 업데이트 처리
             new_hashtags = request.POST.get('new_hashtags', '')
             if new_hashtags:
                 # 해시태그를 '#'으로 시작하는 부분만 추출하여 리스트로 저장
                 hashtags = [tag.strip('#') for tag in new_hashtags.split() if tag.startswith('#')]
-                product.hashtags.clear()  # 기존 해시태그를 모두 지움
+
+                ### 해시태그 검증 로직 추가 ###
+                valid_hashtags = []
                 for tag in hashtags:
+                    if re.search(r'\s', tag):  # 공백이 포함되어 있는지 확인
+                        form.add_error(None, f"해시태그 '{tag}'는 공백을 포함할 수 없습니다.")
+                    elif re.search(r'[^a-zA-Z0-9가-힣]', tag):  # 특수문자가 포함되어 있는지 확인
+                        form.add_error(None, f"해시태그 '{tag}'는 특수문자를 포함할 수 없습니다.")
+                    else:
+                        valid_hashtags.append(tag)
+                
+                if form.errors:  # 유효하지 않은 해시태그가 있을 경우, 폼을 다시 렌더링
+                    context = {
+                        'form': form,
+                        'product': product,
+                        'existing_hashtags': ' '.join([f'#{hashtag.content}' for hashtag in product.hashtags.all()])
+                    }
+                    return render(request, 'products/update.html', context)
+                
+                product.hashtags.clear()  # 기존 해시태그를 모두 지움
+                for tag in valid_hashtags:  # 유효한 해시태그만 추가
                     hashtag, created = Hashtag.objects.get_or_create(content=tag)
                     product.hashtags.add(hashtag)
 
@@ -102,7 +135,6 @@ def delete(request, pk):
         return redirect('products:products')
     else:
         return redirect('products:detail', pk=pk)
-
 
 
 @require_POST

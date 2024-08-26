@@ -1,4 +1,4 @@
-# Spartamarket
+# Spartamarket
 
 ## 📖 목차
 1. [프로젝트 소개](#프로젝트-소개)
@@ -19,9 +19,9 @@
 사용자는 회원 가입 후, 자신의 물건을 등록하고 다른 사용자가 등록한 물건을 찜할 수 있습니다.
 
 ## 팀소개
-서경태 - 팀장
-김한규 - 서기
-김채림
+서경태 - 팀장  
+김한규 - 서기  
+김채림  
 박현진
 
 ## 프로젝트 계기
@@ -50,13 +50,16 @@
 ## 📚️ 기술스택
 - 프론트엔드(Frontend)
 	- HTML/CSS
-	- Bootsrap
+	- Bootstrap
 	- JavaScript
+
 - 백엔드(Backend) 
-    	- Python
-  	- Django
+    - Python
+    - Django
+
 - 데이터베이스(Database)
   	- SQLite
+
 - 기타 도구 및 라이브러리
   	- Git/GitHub
   	- django-extensions
@@ -69,6 +72,7 @@
 ### ✔️ Version Control
 - Git: 소스 코드 버전 관리 시스템. 프로젝트의 버전 기록을 유지하고 협업을 지원함.
 - GitHub: 원격 저장소 호스팅 서비스, 코드 리뷰 및 협업을 지원.
+
 ### ✔️ IDE
 - Visual Studio Code: Python, JavaScript, HTML/CSS의 개발을 위한 통합 개발 환경. 확장성 높은 플러그인 시스템 지원.
   
@@ -94,7 +98,7 @@
 
 ## API 명세서
 
-## Accounts API
+### Accounts API
 
 1. 로그인 (Login)
 - Method: `POST`
@@ -125,7 +129,7 @@
 - Endpoint: `/accounts/delete/`
 
 
-## Products API
+### Products API
 
 1. 상품 목록 조회 (Products List)
 - Method: `GET`
@@ -164,7 +168,7 @@
 - Params: `searched`
 
 
-## Users API
+### Users API
 
 1. 사용자 목록 조회 (Users List)
 - Method: `GET`
@@ -181,13 +185,13 @@
 
 
 ## ERD
-![Uploading Sparatamarket_ERD.drawio (1).png…]()
-
+![ERD 이미지](Sparatamarket_ERD.drawio.png)
 
 
 
 ## 프로젝트 파일 구조
 
+```plaintext
 SpartaMarket/
 ├── accounts/               # 사용자 계정 관련 앱
 │   └── *                   # 앱 관련 파일들 (admin.py, models.py, views.py 등)
@@ -203,9 +207,3 @@ SpartaMarket/
 │   └── *                   # 앱 관련 파일들 (admin.py, models.py, views.py 등)
 ├── manage.py               # Django 관리 커맨드 파일
 └── README.md               # 프로젝트 설명서
-
-
-
-
-
-## Trouble Shooting

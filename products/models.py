@@ -14,7 +14,7 @@ class Product(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    image = models.ImageField(upload_to="images/", blank=True)
+    image = models.ImageField(upload_to="product_img/", blank=True)
     view_count = models.IntegerField(default=0)
 
     author = models.ForeignKey(

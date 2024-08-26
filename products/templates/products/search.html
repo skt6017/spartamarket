@@ -5,22 +5,21 @@
 <h1>Products</h1>
 <form action="{% url 'products:search' %}" method="POST" class="d-flex" role="search">
     {% csrf_token %}
-    <input class="form-control me-2" type="search" placeholder="Search" name="searched" aria-label="Search">
+    <input class="form-control me-2" type="search" placeholder="검색어를 입력하세요." name="searched" aria-label="Search">
     <button class="btn btn-outline-success" type="submit">Search</button>
 </form>
 {% if not searched %}
     <h3>검색 결과가 없습니다. </h3>
 {% else %}
-    <h1>'{{ searched }}' 검색 결과</h1>
+    <h4>'{{ searched }}' 검색 결과</h4>
     <br>
     {% for product in products %}
-        <form action="{% url 'products:detail' product.pk %}" method="POST">
-            {% csrf_token %}
-            <a href="{% url 'products:detail' product.pk %}">[ {{ product.pk }} ] {{ product.title }}</a>
-        </form>
-        <a href="">
+
+        <a href="{% url 'products:detail' product.pk %}">[ {{ product.pk }} ] {{ product.title }}</a>
+        <a href="{% url "users:profile" product.author %}">
             <p> 작성자: {{ product.author }}
             </a>
+
         <form action="{% url 'products:like' product.pk %}" method="POST">
             {% csrf_token %}
             {% if request.user in product.like_users.all %}
@@ -33,6 +32,7 @@
             </button>
             {% endif %}
         </form>
+
         <hr>
     {% endfor %}
 {% endif %}

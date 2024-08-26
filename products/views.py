@@ -12,10 +12,13 @@ from django.db.models import Q
 def index(request):
     return render(request, 'products/index.html')
 
-
 def products(request):
-    products = Product.objects.all().order_by("-pk")
-    context = {"products": products}
+    sort_by = request.GET.get('sort', '-view_count')
+    products = Product.objects.all().order_by(sort_by)
+    context = {
+        "products": products,
+        "sort_by": sort_by
+        }
     return render(request, "products/products.html", context)
 
 
@@ -64,7 +67,7 @@ def update(request, pk):
     product = get_object_or_404(Product, pk=pk)
 
     if request.method == 'POST':
-        form = ProductForm(request.POST, instance=product)
+        form = ProductForm(request.POST, request.FILES, instance=product)
         if form.is_valid():
             form.save()
             # 해시태그 업데이트 처리
@@ -104,11 +107,11 @@ def delete(request, pk):
 
 @require_POST
 def like(request, pk):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         product = get_object_or_404(Product, pk=pk)
         # request.user가 상품을 이미 좋아요 한 상태이면 좋아요한 유저에서 delete
         if product.like_users.filter(pk=request.user.pk).exists():
-            product.like_users.delete(request.user)
+            product.like_users.remove(request.user)
         else:
             product.like_users.add(request.user)
         # products 페이지로 리다이렉트
@@ -145,7 +148,8 @@ def search(request):
             Q(author__username__icontains=searched) |
             # product의 hashtags가 matching_hashtags에 있는지
             Q(hashtags__in=matching_hashtags)
-        )
+        ).distinct()
+        
         context = {
             'products': products,
             'searched': searched,

@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Create a new Product</h1>
+<h1>새로운 상품 작성하기</h1>
 <form action="{% url "products:create" %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
     <label for="new_hashtags">Hashtags:</label>
     <input type="text" id="new_hashtags" name="new_hashtags"><br>
-    <button type="submit">Create</button>
+    <button type="submit">작성 완료</button>
 </form>
 {% endblock %}

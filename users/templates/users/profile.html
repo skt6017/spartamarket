@@ -3,6 +3,9 @@
 <h1>{{ member.username }}'s Profile Page</h1>
 <div>
     <h3>username: {{ member.username }}</h3>
+    {% if member.image %}
+    <img src="{{ member.image.url }}" alt="{{ member.image }}">
+    {% endif %}
     {% if request.user != member %}
         <form action="{% url 'users:follow' member.pk %}" method="POST">
             {% csrf_token %}

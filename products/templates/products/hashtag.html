@@ -1,12 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>{{ hashtag.content }}</h2>
-    <br>
     <h3>{{ hashtag.content }} (을)를 태그한 글</h3>
-    <br>
-{% for product in products %}
-<a href="{% url 'products:detail' product.pk %}"><h2>{{ product.title }}</h2></a>
-    {% endfor %}
+
+    <ul>
+     {% for product in products %}
+        <li>
+        <a href="{% url 'products:detail' product.pk %}">[ {{ product.pk }} ] {{ product.title }}</a>
+        </li>
+        {% endfor %}
+    </ul>
 {% endblock %}
 

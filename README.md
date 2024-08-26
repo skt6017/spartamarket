@@ -94,20 +94,91 @@
 
 ## API 명세서
 
-### Accounts
-- POST /accounts/signup: 새로운 사용자 등록.
-- POST /accounts/login: 사용자 로그인.
-- POST /accounts/logout : 사용자 로그아웃.
-- POST /accounts/profile/<int:pk> : 사용자 프로필 조회
-- POST /accounts/profile/<int:pk>/follow : 사용자 프로필 팔로잉 목록에 추가
+## Accounts API
 
-### Products
-- POST /products/create: 상품 등록.
-- GET /products: 상품 목록 조회.
-- GET /products/<int:pk>: 특정 상품 상세 조회.
-- POST /products/<int:pk>/update: 등록한 상품 수정.
-- POST /products/<int:pk>/delete: 등록한 상품 삭제.
-- POST /products/<int:pk>/like: 특정 상품을 찜 목록에 추가 및 제거
+1. 로그인 (Login)
+- Method: `POST`
+- Endpoint: `/accounts/login/`
+- Params: `username`, `password`
+
+2. 로그아웃 (Logout)
+- Method: `POST`
+- Endpoint: `/accounts/logout/`
+
+3. 회원가입 (Signup)
+- Method: `POST`
+- Endpoint: `/accounts/signup/`
+- Params: `username`, `password1`, `password2`, `email`, `first_name`, `last_name`, `image` (optional)
+
+4. 프로필 수정 (Update Profile)
+- Method: `POST`
+- Endpoint: `/accounts/update/`
+- Params: `username`, `email`, `first_name`, `last_name`, `image` (optional)
+
+5. 비밀번호 변경 (Change Password)
+- Method: `POST`
+- Endpoint: `/accounts/change_password/`
+- Params: `old_password`, `new_password1`, `new_password2`
+
+6. 계정 삭제 (Delete Account)
+- Method: `POST`
+- Endpoint: `/accounts/delete/`
+
+
+## Products API
+
+1. 상품 목록 조회 (Products List)
+- Method: `GET`
+- Endpoint: `/products/`
+- Params: `sort` (optional, default: `-view_count`)
+
+2. 상품 상세 조회 (Product Detail)
+- Method: `GET`
+- Endpoint: `/products/<int:pk>/`
+
+3. 상품 생성 (Create Product)
+- Method: `POST`
+- Endpoint: `/products/create/`
+- Params: `title`, `content`, `image` (optional), `new_hashtags` (optional)
+
+4. 상품 수정 (Update Product)
+- Method: `POST`
+- Endpoint: `/products/<int:pk>/update/`
+- Params: `title`, `content`, `image` (optional), `new_hashtags` (optional)
+
+5. 상품 삭제 (Delete Product)
+- Method: `POST`
+- Endpoint: `/products/<int:pk>/delete/`
+
+6. 상품 좋아요 (Like Product)
+- Method: `POST`
+- Endpoint: `/products/<int:pk>/like/`
+
+7. 해시태그로 상품 조회 (Products by Hashtag)
+- Method: `GET`
+- Endpoint: `/products/<int:hashtag_pk>/hashtag/`
+
+8. 상품 검색 (Search Products)
+- Method: `POST`
+- Endpoint: `/products/search/`
+- Params: `searched`
+
+
+## Users API
+
+1. 사용자 목록 조회 (Users List)
+- Method: `GET`
+- Endpoint: `/users/`
+
+2. 사용자 프로필 조회 (Profile Detail)
+- Method: `GET`
+- Endpoint: `/users/profile/<str:username>/`
+
+3. 사용자 팔로우/언팔로우 (Follow/Unfollow User)
+- Method: `POST`
+- Endpoint: `/users/<int:user_pk>/follow/`
+
+
 
 ## ERD
 ![Uploading Sparatamarket_ERD.drawio (1).png…]()
@@ -116,6 +187,23 @@
 
 
 ## 프로젝트 파일 구조
+
+SpartaMarket/
+├── accounts/               # 사용자 계정 관련 앱
+│   └── *                   # 앱 관련 파일들 (admin.py, models.py, views.py 등)
+├── media/                  # 미디어 파일 저장소
+├── products/               # 제품 관련 앱
+│   └── *                   # 앱 관련 파일들 (admin.py, models.py, views.py 등)
+├── templates/              # 템플릿 파일들 (HTML 등)
+├── static/                 # 정적 파일들 (CSS, 이미지 등)
+├── spartamarket/           # 프로젝트 설정 디렉터리
+│   ├── settings.py         # 프로젝트 설정 파일
+│   ├── urls.py             # 전역 URL 패턴 정의
+├── users/                  # 사용자 관련 앱
+│   └── *                   # 앱 관련 파일들 (admin.py, models.py, views.py 등)
+├── manage.py               # Django 관리 커맨드 파일
+└── README.md               # 프로젝트 설명서
+
 
 
 

@@ -1,3 +1,99 @@
-img {
-    width: 250px;
+.container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl{
+    margin: 0;
+    padding: 0;
+
+}
+
+img{
+    width:100vw;
+    height: 91vh;
+    object-fit: cover; /* 비율을 유지하면서 뷰포트를 채움 */
+    margin: 0;
+    padding: 0;
+    display: block; /* 이미지의 여백을 없앰 */
+}
+
+
+.navbar{
+    background-color: black;
+    color: white;
+}
+
+/* base.html > 유저 위치 */
+.user-container {
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+}
+
+.user-image {
+    margin-left: 10px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%; /* 동그라미 모양으로 만들기 */
+    border: 3px solid white;
+    object-fit: cover; /* 이미지를 틀에 맞게 자르기 */
+    margin-right: 10px; /* 이미지와 텍스트 사이의 간격 */
+
+}
+
+
+/* 프로필 수정 및 로그아웃 */
+.log-container{
+    display: flex;
+    margin-right: 30px;
+    left: 50%;
+    color: white;
+}
+
+.log-container a{
+    margin-right:10px ; 
+}
+
+
+.greeting{
+    color: white;
+}
+
+/* index.html > ul <상품리스트, 등록하기> - 위에 상단에 고정하기*/
+.product-container{
+    display: flex;
+    list-style-type: none;
+    margin: 10px;
+    position: fixed;
+    top: 0;
+    left: 50%; /* 화면의 중앙에 위치 */
+    transform: translateX(-50%); /* 중앙 정렬 보정 */
+    z-index: 1000;
+    padding: 4px;
+}
+
+.product-container a{
+    font-size: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    align-items: center;
+    text-decoration: none;
+}
+
+.product-container :hover{
+    color:rgb(255, 0, 0);
+    transform: scale(1.05);
+}
+
+/* create.html */
+.create-box{
+    display: flex;
+    margin-left: 20px;
+    margin-top: 3%;
+    font-size: 20px;
+}
+
+.create-box .form-box input{
+    padding: 3px;
+}
+
+.create-box button{
+    margin-top: 30px;
+    left: 50px;
 }

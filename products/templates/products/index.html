@@ -1,11 +1,14 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-<h1>Index Page</h1>
-<img src="{% static "products/cat.png" %}">
-<ul>
-    <li><a href="{% url 'products:products' %}">상품리스트</a></li>
-    <li><a href="{% url 'products:create' %}">등록하기</a></li>
+{% comment %} <h1>Index Page</h1> {% endcomment %}
+{% comment %} <img src="{% static "products/cat.png" %}"> {% endcomment %}
+<img src="{% static "products/bg-1.png" %}"> 
+
+
+<ul class = product-container>
+    <li><a href="{% url 'products:products' %}"> 상품리스트 </a></li>
+    <li><a href="{% url 'products:create' %}"> 등록하기 </a></li>
 </ul>
 {% endblock content %}
 

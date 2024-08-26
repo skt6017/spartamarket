@@ -17,8 +17,8 @@
 <hr>
 <form action="{% url "products:products" %}" mehtod="GET">
     <select name="sort" id="sort">
-        <option value="-pk" {% if sort_by is '-pk' %}selected{% endif %}>최신순</option>
-        <option value="-view_count" {% if sort_by is '-view_count' %}selected{% endif %}>인기순</option>
+        <option value="-view_count" {% if sort_by == '-view_count' %}selected{% endif %}>인기순</option>
+        <option value="-pk" {% if sort_by == '-pk' %}selected{% endif %}>최신순</option>
     </select>
     <button type="submit">정렬</button>
 </form>

@@ -1,10 +1,14 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
-<h1>{{ member.username }}'s Profile Page</h1>
+<h1>{{ member.username }}님의 프로필 페이지</h1>
 <div>
-    <h3>username: {{ member.username }}</h3>
+    <h3>회원 ID : {{ member.username }}</h3>
+    <p> 가입일 : {{ member.date_joined }}</p>
     {% if member.image %}
     <img src="{{ member.image.url }}" alt="{{ member.image }}">
+    {% else %}
+    <img src="{% static "accounts/user.png" %}">
     {% endif %}
     {% if request.user != member %}
         <form action="{% url 'users:follow' member.pk %}" method="POST">
@@ -20,6 +24,24 @@
         팔로워 : {{ member.followers.count }}명
         팔로잉 : {{ member.following.count }}명
     </p>
+
+    <p> 등록한 물건 <p>
+        <ul>
+            {% for product in member.products.all  %}
+            <a href="{% url 'products:detail' product.pk %}">
+            <li> 제목: {{ product.title }} </li>
+            </a>
+            {% endfor %}
+        </ul>
+    <p> 찜한 물건 <P>
+        <ul>
+            {% for like_product in member.like_products.all  %}
+            <a href="{% url 'products:detail' like_product.pk %}">
+            <li> 제목: {{ like_product }} </li>
+            </a>
+            {% endfor %}
+        </ul>
+
 </div>
-<a href="/index/">홈으로 돌아가기</a>
+<a href="{% url "products:products" %}">상품리스트 보기</a>
 {% endblock content %}

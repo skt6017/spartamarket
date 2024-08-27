@@ -1,0 +1,40 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<h1>{{ product.title }}</h1>
+<p style="display: flex; align-items: center;">
+{% if product.author.image %}
+    <img src="{{ product.author.image.url }}" alt="{{ product.author.image }}"style="width: 50px; height: 50px; border-radius: 50%; vertical-align: middle;">
+    {% else %}
+    <img src="{% static "accounts/user.png" %}" style="width: 24px; height: 24px; border-radius: 50%; vertical-align: middle;">
+    {% endif %}
+    <a href="{% url "users:profile" product.author %}" >{{ product.author.username }}</a>
+
+</p>
+<br>
+{% if product.image %}
+    <img src="{{ product.image.url }}" alt="{{ product.image }}" style="width: 500px;">
+{% endif %}
+<p>{{ product.content|linebreaks }}</p>
+
+<p>조회수: {{ product.view_count }}<br>
+작성 날짜: {{ product.created_at }}<br>
+수정 날짜: {{ product.updated_at }}</p>
+
+<h4>Hashtags:</h4>
+<ul class="list-group list-group-horizontal">
+    {% for hashtag in product.hashtags.all %}
+    <li class="list-group-item"><a href="{% url 'products:hashtag' hashtag_pk=hashtag.pk %}">#{{ hashtag.content }}</a></li>
+    {% endfor %}
+</ul>
+<BR>
+{% if request.user == product.author or request.user.is_staff %}
+<a href="{% url 'products:update' pk=product.pk %}"><button type="submit">수정하기</button></a>
+<form action="{% url 'products:delete' pk=product.pk %}" method="post">
+    {% csrf_token %}
+    <button type="submit">삭제하기</button>
+</form>
+{% endif %}
+<a href="{% url "products:products" %}">상품리스트 보기</a>
+{% endblock %}

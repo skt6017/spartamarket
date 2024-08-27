@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+<h1>Update</h1>
+
+{% block content %}
+    <h2 class="fw-bold">{{ product.title }} 수정하기</h2>
+    <form action="{% url "products:update" product.pk %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <label for="new_hashtags">Hashtags:</label>
+        <input type="text" id="new_hashtags" name="new_hashtags" value="{{ existing_hashtags }}">
+        <br>
+        <button type="submit">수정하기</button>
+    </form>
+    <a href="{% url "products:detail" product.pk %}">돌아가기</a>
+{% endblock %}

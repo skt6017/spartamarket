@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<center>
+<div class="index-page">
+    <img src="{% static 'products/lovenpeace_big.png' %}">
+</div>
+<br>
+</body>
+<div class="row">
+    <a href="{% url 'products:products' %}">
+        <button>상품리스트</button></a>
+
+</div>
+{% endblock content %}
+

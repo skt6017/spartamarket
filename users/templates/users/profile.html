@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<h1 class="fw-bold">{{ member.username }}님의 프로필 페이지</h1>
+<div>
+    <h3>회원 ID : {{ member.username }}</h3>
+    <p> 이름: {{ member.first_name }} {{ member.last_name }} <br>
+        가입일 : {{ member.date_joined }}</p>
+    {% if member.image %}
+    <img src="{{ member.image.url }}" alt="{{ member.image }}" style="width: 200px;">
+    {% else %}
+    <img src="{% static 'accounts/user.png' %}" style="width: 200px;">
+    {% endif %}
+    {% if request.user != member %}
+        <form action="{% url 'users:follow' member.pk %}" method="POST">
+            {% csrf_token %}
+            {% if request.user in member.followers.all %}
+                <input type="submit" value="언팔로우">
+            {% else %}
+                <input type="submit" value="팔로우">
+            {% endif %}
+        </form>
+    {% endif %}
+    <p>
+        팔로워 : {{ member.followers.count }}명
+        팔로잉 : {{ member.following.count }}명
+    </p>
+
+
+    <p> 등록한 물건 <p>
+        <ul>
+            {% for product in member.products.all  %}
+            <a href="{% url 'products:detail' product.pk %}">
+            <li> 제목: {{ product.title }} </li>
+            </a>
+            {% endfor %}
+        </ul>
+    <p> 찜한 물건 <P>
+        <ul>
+            {% for like_product in member.like_products.all  %}
+            <a href="{% url 'products:detail' like_product.pk %}">
+            <li> 제목: {{ like_product }} </li>
+            </a>
+            {% endfor %}
+        </ul>
+
+
+</div>
+<p>
+{% if member == request.user %}
+<a href="{% url "accounts:update" %}">프로필 수정</a> <br>
+{% endif %}
+<a href="{% url "products:products" %}">상품리스트 보기</a>
+</p>
+{% endblock content %}

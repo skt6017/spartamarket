@@ -30,7 +30,7 @@
                     <a class="nav-link" aria-disabled="true">안녕하세요, {{ request.user.username }}님</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="{% url 'accounts:update' %}">프로필 수정</a>
+                    <a class="nav-link" aria-current="page" href="{% url 'users:profile' request.user.username%}">프로필</a>
                 </li>
                 <li class="nav-item">
                     <form action="{% url 'accounts:logout' %}" method="POST">

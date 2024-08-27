@@ -4,11 +4,12 @@
 <h1 class="fw-bold">{{ member.username }}님의 프로필 페이지</h1>
 <div>
     <h3>회원 ID : {{ member.username }}</h3>
-    <p> 가입일 : {{ member.date_joined }}</p>
+    <p> 이름: {{ member.first_name }} {{ member.last_name }} <br>
+        가입일 : {{ member.date_joined }}</p>
     {% if member.image %}
-    <img src="{{ member.image.url }}" alt="{{ member.image }}">
+    <img src="{{ member.image.url }}" alt="{{ member.image }}" style="width: 200px;">
     {% else %}
-    <img src="{% static 'accounts/user.png' %}">
+    <img src="{% static 'accounts/user.png' %}" style="width: 200px;">
     {% endif %}
     {% if request.user != member %}
         <form action="{% url 'users:follow' member.pk %}" method="POST">
@@ -45,5 +46,10 @@
 
 
 </div>
+<p>
+{% if member == request.user %}
+<a href="{% url "accounts:update" %}">프로필 수정</a> <br>
+{% endif %}
 <a href="{% url "products:products" %}">상품리스트 보기</a>
+</p>
 {% endblock content %}

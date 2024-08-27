@@ -14,9 +14,9 @@
 </p>
 <br>
 {% if product.image %}
-    <img src="{{ product.image.url }}" alt="{{ product.image }}">
+    <img src="{{ product.image.url }}" alt="{{ product.image }}" style="width: 500px;">
 {% endif %}
-<p>{{ product.content }}</p>
+<p>{{ product.content|linebreaks }}</p>
 
 <p>조회수: {{ product.view_count }}<br>
 작성 날짜: {{ product.created_at }}<br>

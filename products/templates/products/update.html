@@ -4,7 +4,7 @@
 
 {% block content %}
     <h2 class="fw-bold">{{ product.title }} 수정하기</h2>
-    <form method="post">
+    <form action="{% url "products:update" product.pk %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
         <label for="new_hashtags">Hashtags:</label>

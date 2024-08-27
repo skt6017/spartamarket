@@ -185,7 +185,8 @@
 
 
 ## ERD
-![ERD 이미지](Sparatamarket_ERD.drawio.png)
+![Sparatamarket_ERD drawio](https://github.com/user-attachments/assets/b4e5a89f-492b-4bea-b672-6e2bbbef02ef)
+
 
 
 
